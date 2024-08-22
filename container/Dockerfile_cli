@@ -118,6 +118,6 @@ EXPOSE 8080
 EXPOSE 5432
 
 # start the thing
-RUN find /app
+# RUN find /app
 RUN echo -e '#!/bin/sh\nchown -R postgres:postgres ${POSTGRES_DATA_DIR} /run/postgresql\nsu postgres -c "pg_ctl start -D ${POSTGRES_DATA_DIR}/${POSTGRES_NAME}"\n/usr/bin/navweb\n' >/usr/bin/start.sh && chmod +x /usr/bin/start.sh
-ENTRYPOINT ["/usr/bin/start.sh"]
+#ENTRYPOINT ["/usr/bin/start.sh"]

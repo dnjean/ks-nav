@@ -1,0 +1,22 @@
+# Build Linux image with debug symbols enabled in a container
+podman build -t linux-img -f Dockerfile_linux_app
+podman run -it --name linux-cont linux-img sh
+# cd into linux source code folder within container
+cd /app
+# Configure Linux kernel to enable debug symbols
+make defconfig 
+./scripts/config --file .config \
+	-e DEBUG_INFO \  
+	-e DEBUG_KERNEL \
+	-d DEBUG_INFO_NONE \
+	-e GDB_SCRIPTS \
+	-d DEBUG_INFO_REDUCED \
+	-e DEBUG_INFO_DWARF5 \
+	-e DEBUG_INFO_COMPRESSED_NONE \
+	-d DEBUG_INFO_SPLIT \
+	-d DEBUG_INFO_COMPRESSED_ZLIB
+make oldconfig 
+# Build image with debug symbols enabled
+make vmlinux 
+# exit container and map container /app folder to a local folder
+podman 
